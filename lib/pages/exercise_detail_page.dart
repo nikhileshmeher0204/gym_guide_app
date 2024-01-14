@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:gym_guide_app/data/exercise.dart';
 import 'package:gym_guide_app/model/exercise_model.dart';
 import 'package:collection/collection.dart';
+import 'package:provider/provider.dart';
+import '../data/app_data.dart';
 
 class ExerciseDetailPage extends StatelessWidget {
   static String routeName = "/exerciseDetailPage";
-  const ExerciseDetailPage({Key? key, required this.toggleFavorite}) : super(key: key);
-  final Function(ExerciseModel) toggleFavorite;
+  const ExerciseDetailPage({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final exerciseModel =
-    ModalRoute.of(context)!.settings.arguments as ExerciseModel;
+    final appData = Provider.of<AppData>(context);
+    final exerciseModel = appData.selectedExercise;
+    if (exerciseModel == null) {
+      // Handle the case where no exercise is selected
+      return const Scaffold(
+        body: Text("No exercise selected!"),
+      );
+    }
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: CustomScrollView(
@@ -134,14 +141,14 @@ class ExerciseDetailPage extends StatelessWidget {
                           CircleAvatar(
                             backgroundColor: colorScheme.primary,
                             child: Icon(
-                              Icons.fitness_center,
+                              Icons.repeat,
                               color: colorScheme.onPrimary,
                             ),
                           ),
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(exerciseModel.reps),
+                          Text(exerciseModel.sets),
                         ],
                       ),
                       Row(
@@ -184,7 +191,7 @@ class ExerciseDetailPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          toggleFavorite(exerciseModel);
+          appData.toggleFavorite(exerciseModel);
         },
         child: Icon(
             exerciseModel.isFavourite? Icons.favorite: Icons.favorite_border,

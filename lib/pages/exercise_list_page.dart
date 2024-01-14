@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gym_guide_app/app_state.dart';
-import 'package:gym_guide_app/model/exercise_model.dart';
 import 'package:gym_guide_app/widgets/exercise_card_widget.dart';
-
+import 'package:provider/provider.dart';
+import '../data/app_data.dart';
 import 'exercise_detail_page.dart';
 
 class ExerciseListPage extends StatelessWidget {
@@ -14,10 +14,9 @@ class ExerciseListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String title = args["title"];
-    final List<ExerciseModel> listOfExercise = args["listOfExercise"];
+    final appData = Provider.of<AppData>(context);
+    final title = appData.title;
+    final listOfExercise = appData.listOfExercise;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -60,8 +59,8 @@ class ExerciseListPage extends StatelessWidget {
                           width: 150.0,
                           decoration: BoxDecoration(
                               color: colorScheme.secondaryContainer,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10.0))),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
                           child: Center(
                             child: Text(
                               "Difficulty Level: ${AppState.difficultyLevel}",
@@ -78,8 +77,8 @@ class ExerciseListPage extends StatelessWidget {
                           width: 150.0,
                           decoration: BoxDecoration(
                               color: colorScheme.tertiaryContainer,
-                              borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0))),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
                           child: Center(
                             child: Text(
                               "Equipment type: ${AppState.selectedEquipment.name}",
@@ -92,7 +91,6 @@ class ExerciseListPage extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     SizedBox.fromSize(size: const Size.square(80)),
                     Container(
                       decoration: BoxDecoration(
@@ -118,12 +116,11 @@ class ExerciseListPage extends StatelessWidget {
                   final exerciseModel = listOfExercise[index];
                   return GestureDetector(
                     onTap: () {
+                      appData.toggleFavorite(exerciseModel);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ExerciseDetailPage(
-                            toggleFavorite: (ExerciseModel) {},
-                          ),
+                          builder: (context) => const ExerciseDetailPage(),
                         ),
                       );
                     },

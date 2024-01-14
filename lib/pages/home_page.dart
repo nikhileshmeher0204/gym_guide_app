@@ -23,11 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       drawer: NavigationDrawer(
-        surfaceTintColor: colorScheme.secondary,
-        indicatorColor: colorScheme.primary,
-        backgroundColor: colorScheme.surfaceVariant,
         children: [
           const Padding(
             padding: EdgeInsets.all(8.0),
@@ -93,9 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
-            // ...workoutCategoryList
-            //     .map((e) => WorkOutCategoryWidget(workoutCategoryModel: e))
-            //     .toList(),
             _index == 0
                 ? Expanded(
                     child: ListView.builder(

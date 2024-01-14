@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gym_guide_app/data/app_data.dart';
 import 'package:gym_guide_app/pages/bmi_calculator_page.dart';
 import 'package:gym_guide_app/pages/exercise_detail_page.dart';
 import 'package:gym_guide_app/pages/exercise_list_page.dart';
 import 'package:gym_guide_app/pages/filter_page.dart';
 import 'package:gym_guide_app/pages/home_page.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:provider/provider.dart';
 
 import 'data/exercise.dart';
 import 'model/exercise_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(create: (context) =>AppData(),
+  child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -21,14 +24,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  _toggleIsFavorite(ExerciseModel exerciseModel) {
-    ExerciseModel model = exerciseList
-        .firstWhere((element) => element.name == exerciseModel.name);
-    setState(() {
-      model.isFavourite = !model.isFavourite;
-    });
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
@@ -47,7 +43,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           MyHomePage.routeName: (context) => MyHomePage(),
           ExerciseListPage.routeName: (context) => const ExerciseListPage(),
-          ExerciseDetailPage.routeName: (context) => ExerciseDetailPage(toggleFavorite: _toggleIsFavorite,),
+          ExerciseDetailPage.routeName: (context) => const ExerciseDetailPage(),
           BMICalculatorPage.routeName: (context) => const BMICalculatorPage(),
           FilterPage.routeName: (context) => const FilterPage(),
 
